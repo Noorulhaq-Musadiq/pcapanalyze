@@ -1,0 +1,4 @@
+- Support heartbeats
+- Verify filetype of input file
+- Convert logic into Python class
+- Make script more general by allowing customization of analysis via some kind of config/xml file

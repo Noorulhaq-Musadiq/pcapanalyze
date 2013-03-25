@@ -1,0 +1,111 @@
+XHR-POLLING:
+
+NOTE: the GET and POST sent use different ports (55136 for GET and 55137 for POST)
+
+1. base page requested (HTTP)
+2. socket.io.js requested (HTTP)
+3. /socket.io/1/?t=1364157492178 requested (HTTP)
+	response:
+
+	HTTP/1.1 200 OK
+	Content-Type: text/plain
+	Date: Sun, 24 Mar 2013 20:38:12 GMT
+	Connection: keep-alive
+	Transfer-Encoding: chunked
+
+	22
+	106377023977409025::25:xhr-polling					(configuration information sent back to client)
+	0
+[[[ beginning of difference from websockets ]]]
+4. /socket.io/1/xhr-polling/106377023977409025?t=1364157492192 requested (HTTP)
+	response:
+
+	HTTP/1.1 200 OK
+	Content-Type: text/plain; charset=UTF-8
+	Content-Length: 3
+	Connection: Keep-Alive
+	Date: Sun, 24 Mar 2013 20:38:12 GMT
+
+	1::
+4a. /socket.io/1/xhr-polling/106377023977409025?t=1364157506672 POSTed (HTTP)
+	with content: 5:::{"name":"hi","args":["test"]}
+	response: HTTP/1.1 200 OK
+	1
+5. /socket.io/1/xhr-polling/106377023977409025?t=1364157492229 requested (HTTP)
+	response:
+
+	HTTP/1.1 200 OK
+	Content-Type: text/plain; charset=UTF-8
+	Content-Length: 37
+	Connection: Keep-Alive
+	Date: Sun, 24 Mar 2013 20:38:26 GMT
+
+	5:::{"name":"hiback","args":["test"]}
+6. /socket.io/1/xhr-polling/106377023977409025?t=1364157526717 requested (HTTP)
+	response:
+
+	HTTP/1.1 200 OK
+	Content-Type: text/plain; charset=UTF-8
+	Content-Length: 3
+	Connection: Keep-Alive
+	Date: Sun, 24 Mar 2013 20:39:06 GMT
+
+	8::			(NOOP)
+6a. /socket.io/1/xhr-polling/106377023977409025?t=1364157562886 POSTed (HTTP)
+	with content: 0::
+	response: HTTP/1.1 200 OK
+	1
+7. /socket.io/1/xhr-polling/106377023977409025?t=1364157546732 requested (HTTP)
+	response:
+	HTTP/1.1 200 OK
+	Date: Sun, 24 Mar 2013 20:39:22 GMT
+	Connection: keep-alive
+	Transfer-Encoding: chunked
+
+	0			(Disconnect)
+
+
+
+WEBSOCKETS:
+
+NOTE: the HTTP GET and websocket client port numbers differ (58610 for HTTP and 58611 for websockets)
+
+1. base page requested (HTTP)
+2. socket.io.js requested (HTTP)
+3. /socket.io/1/?t=1363846820451 requested (HTTP)
+	response:
+
+	HTTP/1.1 200 OK
+	Content-Type: text/plain
+	Date: Thu, 21 Mar 2013 06:20:20 GMT
+	Connection: keep-alive
+	Transfer-Encoding: chunked
+
+	21
+	9225478231359638432::25:websocket					(configuration information sent back to client)
+	0
+[[[ beginning of difference from XHR ]]]
+[[[ new client port number for websockets ]]]
+4. /socket.io/1/websocket/9225478231359638432 requested (HTTP)
+	Sec-WebSocket-Version: 13
+	Sec-WebSocket-Key: rd6DnoPiFLfq9dnRMKnrKQ==
+	Connection: keep-alive, Upgrade
+	Upgrade: websocket
+
+	response:
+
+	HTTP/1.1 101 Switching Protocols
+	Upgrade: websocket
+	Connection: Upgrade
+	Sec-WebSocket-Accept: W1C7gaV66E2UgXJyaZMldQVWXPY=
+
+	..1::
+5. ...\...f$..~p..9<..4w..~.../<..~j..(<..			(TCP, no idea... maybe the {"hi", "test"} message?)
+	reponse:
+
+	.%5:::{"name":"hiback","args":["test"]}
+5. ..h...											(TCP, no idea)
+6. ..0::											(TCP, disconnect)
+	response:
+
+	..._`.											(TCP, no idea)
